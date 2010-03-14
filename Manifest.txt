@@ -11,7 +11,6 @@ features/support/common.rb
 features/support/env.rb
 features/support/matchers.rb
 lib/subprocess.rb
-lib/subprocess/.popen.rb.swp
 lib/subprocess/popen.rb
 script/console
 script/destroy
@@ -20,4 +19,6 @@ spec/spec.opts
 spec/spec_helper.rb
 spec/subprocess/popen_spec.rb
 spec/subprocess_spec.rb
+subprocess.gemspec
+tasks/git.rake
 tasks/rspec.rake
