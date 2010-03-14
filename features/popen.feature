@@ -29,6 +29,8 @@ Feature: Run simple subprocesses in ruby
     Scenarios: nonzero exit code subprocesses with stdout
       | command | exitcode | stdout | stderr |
       | echo 1 && exit 1 | 1 | 1 |  |
+      | echo 1 && exit 2 | 2 | 1 |  |
+      | echo 1 && exit 99 | 99 | 1 |  |
 
     Scenarios: nonzero exit code subprocesses with stderr
       | command | exitcode | stdout | stderr |
