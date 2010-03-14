@@ -1,0 +1,70 @@
+= subprocess
+
+* http://github.com/bramswenson/subprocess
+
+== DESCRIPTION:
+
+* Subprocess provides a clean wrapper class around the Kernel.exec method.
+
+== FEATURES/PROBLEMS:
+
+* Provides working Subprocess::Popen class used to call system commands in and object oriented manner.
+
+== SYNOPSIS:
+
+>> require 'subprocess'
+=> true
+>> c = Subprocess::Popen.new('ruby -v')
+=> #<Subprocess::Popen:0x7fd254e48be8 @command="ruby -v">
+>> c.run
+=> 0
+>> c.exitcode
+=> 0
+>> c.stdout
+=> "ruby 1.8.7 (2010-01-10 patchlevel 249) [x86_64-linux]"
+>> c.stderr
+=> ""
+>> c.start_time
+=> Sun Mar 14 01:45:01 -0500 2010
+>> c.end_time
+=> Sun Mar 14 01:45:01 -0500 2010
+>> c.run # yes you can run me again
+=> 0
+>> c.start_time
+=> Sun Mar 14 01:45:59 -0500 2010
+>> c.end_time
+=> Sun Mar 14 01:45:59 -0500 2010
+
+
+== REQUIREMENTS:
+
+tested on ruby 1.8.7
+
+== INSTALL:
+
+[sudo] gem install subprocess
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2010 Bram Swenson
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
