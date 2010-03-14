@@ -12,28 +12,28 @@
 
 == SYNOPSIS:
 
->> require 'subprocess'
-=> true
->> c = Subprocess::Popen.new('ruby -v')
-=> #<Subprocess::Popen:0x7fd254e48be8 @command="ruby -v">
->> c.run
-=> 0
->> c.exitcode
-=> 0
->> c.stdout
-=> "ruby 1.8.7 (2010-01-10 patchlevel 249) [x86_64-linux]"
->> c.stderr
-=> ""
->> c.start_time
-=> Sun Mar 14 01:45:01 -0500 2010
->> c.end_time
-=> Sun Mar 14 01:45:01 -0500 2010
->> c.run # yes you can run me again
-=> 0
->> c.start_time
-=> Sun Mar 14 01:45:59 -0500 2010
->> c.end_time
-=> Sun Mar 14 01:45:59 -0500 2010
+  >> require 'subprocess'
+  => true
+  >> c = Subprocess::Popen.new('ruby -v')
+  => #<Subprocess::Popen:0x7fd254e48be8 @command="ruby -v">
+  >> c.run
+  => 0
+  >> c.exitcode
+  => 0
+  >> c.stdout
+  => "ruby 1.8.7 (2010-01-10 patchlevel 249) [x86_64-linux]"
+  >> c.stderr
+  => ""
+  >> c.start_time
+  => Sun Mar 14 01:45:01 -0500 2010
+  >> c.end_time
+  => Sun Mar 14 01:45:01 -0500 2010
+  >> c.run # yes you can run me again
+  => 0
+  >> c.start_time
+  => Sun Mar 14 01:45:59 -0500 2010
+  >> c.end_time
+  => Sun Mar 14 01:45:59 -0500 2010
 
 
 == REQUIREMENTS:
