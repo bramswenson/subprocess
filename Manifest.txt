@@ -3,10 +3,15 @@ Manifest.txt
 PostInstall.txt
 README.rdoc
 Rakefile
-features/development.feature
+features/.popen.feature.swp
+features/.popen_without_blocking.feature.swp
 features/popen.feature
+features/popen_without_blocking.feature
+features/step_definitions/.popen_steps.rb.swp
+features/step_definitions/.popen_without_blocking_steps.rb.swp
 features/step_definitions/common_steps.rb
 features/step_definitions/popen_steps.rb
+features/step_definitions/popen_without_blocking_steps.rb
 features/support/common.rb
 features/support/env.rb
 features/support/matchers.rb
