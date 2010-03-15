@@ -7,9 +7,10 @@ module Subprocess
       before(:each) do
         @subprocess = Popen.new('echo 1')
         @subprocess.run
+        @subprocess.wait
       end
       it "has an exitcode of 0" do
-        @subprocess.exitcode.should == 0
+        @subprocess.status.exitstatus.should == 0
       end
       it "has a stdout of '1'" do
         @subprocess.stdout.should == '1'
