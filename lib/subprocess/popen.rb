@@ -45,7 +45,6 @@ module Subprocess
 
     def wait
       @pid, @status = Process.wait2(@pid)
-      @exitcode = @status.exitstatus
       @running = false
       @stdout, @stderr = @stdout_rd.read.chomp, @stderr_rd.read.chomp
       @stdout_rd.close; @stderr_rd.close
