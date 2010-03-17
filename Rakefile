@@ -11,7 +11,6 @@ Hoe.plugin :cucumberfeatures
 
 $hoe = Hoe.spec 'subprocess' do
   self.developer 'Bram Swenson', 'bram@craniumisajar.com'
-  self.rubyforge_name       = self.name
 end
 
 require 'newgem/tasks'
