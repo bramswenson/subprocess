@@ -18,7 +18,7 @@ module Subprocess
       ssh = Net::SSH.start(@hostname, @username, *@ssh_params) do |ssh|
         ssh.open_channel do |channel|
           channel.exec(@command) do |chan, success|
-            #unless success exit 1
+            exit 1 unless success
 
             channel.on_data do |chan, data|
               $stdout.write data
