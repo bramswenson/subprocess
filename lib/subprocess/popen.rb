@@ -35,7 +35,7 @@ module Subprocess
         STDERR.reopen(stderr_wr)
         stderr_wr.close
 
-        Kernel.exec(@command)
+        exec_popen
       }
       stdin_rd.close
       stdout_wr.close
@@ -48,6 +48,11 @@ module Subprocess
       @running = false
       @stdout, @stderr = @stdout_rd.read.chomp, @stderr_rd.read.chomp
       @stdout_rd.close; @stderr_rd.close
+    end
+
+    private
+    def exec_popen
+      Kernel.exec(@command)
     end
 
   end # class Popen
