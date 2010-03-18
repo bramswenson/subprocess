@@ -10,7 +10,7 @@ Feature: Run simple subprocesses in ruby
     Given I have a new Subprocess instance initialized with "<command>"
     When I invoke the run method of said subprocess
     And I invoke the wait method of said subprocess
-    Then the instance should have a Process::Status object
+    Then the instance should have a status attribute
     And the instances exit status is "<exitstatus>"
     And the instances stdout matches "<stdout>"
     And the instances stderr matches "<stderr>"

@@ -3,13 +3,16 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 begin
   require 'net/ssh'
+  require 'json'
 rescue LoadError
   require 'rubygems'
   require 'net/ssh'
+  require 'json'
 end
+require 'timeout'
 
 module Subprocess
-  VERSION = '0.0.2'
+  VERSION = '0.0.3'
 end
 
 require 'subprocess/popen'

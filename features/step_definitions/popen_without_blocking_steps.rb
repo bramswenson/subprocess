@@ -17,16 +17,16 @@ Then /^the subprocess should not block$/ do
 end
 
 Then /^the subprocess should report its run status$/ do
-  @popen.should respond_to(:is_running?)
+  @popen.should respond_to(:running?)
 end
 
 Then /^the subprocess should support being waited on till complete$/ do
   @popen.wait
-  @popen.status.exitstatus.should be_kind_of Numeric
+  @popen.status[:exitstatus].should be_kind_of Numeric
 end
 
 Then /^the subprocess should have status info$/ do
-  @popen.status.should be_a_kind_of Process::Status
+  @popen.status.should be_a_kind_of Hash
 end
 
 

@@ -10,12 +10,12 @@ When /^I invoke the wait method of said subprocess$/ do
   @popen.wait
 end
 
-Then /^the instance should have a Process::Status object$/ do
-  @popen.status.should be_a_kind_of Process::Status
+Then /^the instance should have a status attribute$/ do
+  @popen.status.should be_a_kind_of Hash
 end
 
 Then /^the instances exit status is "([^\"]*)"$/ do |exitstatus|
-  @popen.status.exitstatus.should == exitstatus.to_i
+  @popen.status[:exitstatus].should == exitstatus.to_i
 end
 
 Then /^the instances stdout matches "([^\"]*)"$/ do |stdout|

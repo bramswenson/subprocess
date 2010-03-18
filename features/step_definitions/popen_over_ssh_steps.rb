@@ -17,16 +17,16 @@ Then /^the remote subprocess should not block$/ do
 end
 
 Then /^the remote subprocess should report its run status$/ do
-  @popen.should respond_to(:is_running?)
+  @popen.should respond_to(:running?)
 end
 
 Then /^the remote subprocess should support being waited on till complete$/ do
   @popen.wait
-  @popen.status.exitstatus.should be_kind_of Numeric
+  @popen.status[:exitstatus].should be_kind_of Numeric
 end
 
 Then /^the remote subprocess should have status info$/ do
-  @popen.status.should be_a_kind_of Process::Status
+  @popen.status.should be_a_kind_of Hash
 end
 
 
@@ -43,7 +43,7 @@ When /^I invoke the wait method of said remote subprocess$/ do
 end
 
 Then /^the remote instances exit status is "([^\"]*)"$/ do |exitstatus|
-  @popen_remote.status.exitstatus.should == exitstatus.to_i
+  @popen_remote.status[:exitstatus].should == exitstatus.to_i
 end
 
 Then /^the remote instances stdout matches "([^\"]*)"$/ do |stdout|
