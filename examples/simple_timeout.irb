@@ -1,0 +1,22 @@
+#!/usr/bin/env irb
+
+begin
+  require 'subprocess'
+rescue LoadError
+  require 'rubygems'
+  require 'subprocess'
+end
+
+# a process to get the current version of ruby from ruby command
+ruby_version = Subprocess::Popen.new('ruby -v')
+# run the process
+ruby_version.run
+# wait on process to complete (blocking method)
+ruby_version.wait
+# the process will have stdout
+ruby_version.stdout
+# and in this case no stderr
+ruby_version.stderr
+# the complete process info is in status
+ruby_version.status
+

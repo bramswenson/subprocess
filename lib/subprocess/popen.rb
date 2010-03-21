@@ -2,7 +2,7 @@ module Subprocess
   class Popen
     include Timeout
 
-    attr_accessor :command, :pid, :stdout, :stderr, :status
+    attr_accessor :command, :stdout, :stderr, :status
 
     def initialize(command, timeout=30)
       @command = command
@@ -12,16 +12,37 @@ module Subprocess
     end
 
     def running?
+      # return false if no parent pid or if running is already false
       return false unless @parent_pid
       return @running unless @running
+
       begin
+        # see if the process is running or not
         Process.kill(0, @parent_pid)
-        @running = true
+        # since we didn't error then we have a pid running
+        # so lets see if is over after less than .5 seconds
+        begin
+          timeout(0.5) do
+            @parent_pid, parent_status = Process.wait2(@parent_pid, 0)
+          end
+        rescue Timeout::Error
+          # wait timed out so so pid is stll running
+          @running = true
+        end
+        # no timeout so pid is finished
+        @running = false
       rescue Errno::ESRCH
+        # Process.kill says the pid is not found
         @running = false
       end
+
+      # parse the child status if pid is complete
       parse_ipc_pipe unless (@running or @ipc_parsed)
       @running
+    end
+
+    def run_time
+      defined?(:@status) ? @status[:run_time] : false
     end
 
     def pid
@@ -30,7 +51,7 @@ module Subprocess
 
     def run
       setup_pipes
-      # record the time and fork off the command
+      # record the time, set running and fork off the command
       @start_time = Time.now.to_f
       @running = true
       @parent_pid = fork_parent
@@ -45,6 +66,7 @@ module Subprocess
     end
 
     def wait
+      # block until the process completes
       @parent_pid, parent_status = Process.wait2(@parent_pid)
       @running = false
       parse_ipc_pipe unless @ipc_parsed

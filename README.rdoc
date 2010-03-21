@@ -12,6 +12,36 @@
 
 == SYNOPSIS:
 
+=== Simple Popen
+
+  >> require 'subprocess'
+  => true
+  >> 
+  ?> # a process to get the current version of ruby from ruby command
+  ?> ruby_version = Subprocess::Popen.new('ruby -v')
+  => #<Subprocess::Popen:0x7f9220bda3a8 @running=false, @command="ruby -v", @timeout=30, @ipc_parsed=false>
+  >> 
+  ?> # run the process
+  ?> ruby_version.run
+  => true
+  >> 
+  ?> # wait on process to complete (blocking method)
+  ?> ruby_version.wait
+  => true
+  >> 
+  ?> # the process will have stdout
+  ?> ruby_version.stdout
+  => "ruby 1.8.7 (2009-06-12 patchlevel 174) [x86_64-linux]"
+  >> 
+  ?> # and in this case no stderr
+  ?> ruby_version.stderr
+  => ""
+  >> 
+  ?> # the complete process info is in status
+  ?> ruby_version.status
+  => {:run_time=>0.0611081123352051, :stopsig=>nil, :exited?=>true, :pid=>16744, :termsig=>nil, :timed_out?=>false, :stopped?=>false, :success?=>true, :exitstatus=>0}
+
+
 
 == REQUIREMENTS:
 

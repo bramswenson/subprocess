@@ -3,12 +3,18 @@ Manifest.txt
 PostInstall.txt
 README.rdoc
 Rakefile
+examples/simple.irb
+examples/simple_timeout.irb
 features/popen.feature
 features/popen_over_ssh.feature
+features/popen_reports_runtime.feature
+features/popen_running.feature
 features/popen_with_timeout.feature
 features/popen_without_blocking.feature
 features/step_definitions/common_steps.rb
 features/step_definitions/popen_over_ssh_steps.rb
+features/step_definitions/popen_reports_runtime_steps.rb
+features/step_definitions/popen_running_steps.rb
 features/step_definitions/popen_steps.rb
 features/step_definitions/popen_with_timeout_steps.rb
 features/step_definitions/popen_without_blocking_steps.rb
@@ -28,5 +34,4 @@ spec/spec_helper.rb
 spec/subprocess/popen_spec.rb
 spec/subprocess_spec.rb
 subprocess.gemspec
-tasks/git.rake
 tasks/rspec.rake
