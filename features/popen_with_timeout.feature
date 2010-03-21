@@ -8,12 +8,12 @@ Feature: Run simple subprocesses stopping them at timeout if not complete
   Scenario: run simple subprocess that goes past timeout
     Given I have a new subprocess that takes more than 5 seconds to run
     And I set a timeout of 5 seconds
-    When I invoke the run method of said subprocess
+    When I invoke the run method of said subprocess with timeout
     Then the subprocess should exit with exitcode 1
 
   Scenario: run simple subprocess that does not go past timeout
     Given I have a new subprocess that takes less than 5 seconds to run
     And I set a timeout of 5 seconds
-    When I invoke the run method of said subprocess
+    When I invoke the run method of said subprocess with timeout
     Then the subprocess should complete fine
 

@@ -2,7 +2,7 @@
 module Subprocess
   
   class PopenRemote < Popen
-    attr_accessor :hostname, :ssh_params, :command, :pid, :stdout, :stderr, :status
+    attr_accessor :hostname, :ssh_params
 
     def initialize(command, hostname, username, *ssh_params)
       @command = command
@@ -13,7 +13,7 @@ module Subprocess
     end
 
     private
-    def exec_popen
+    def fork_parent_exec
       exit_status = 0
       ssh = Net::SSH.start(@hostname, @username, *@ssh_params) do |ssh|
         ssh.open_channel do |channel|

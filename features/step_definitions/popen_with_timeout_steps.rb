@@ -1,11 +1,12 @@
 Given /^I have a new subprocess that takes more than 5 seconds to run$/ do
   @popen = Subprocess::Popen.new('sleep 10', 5)
-  @popen.run
-  @popen.wait
 end
 
 Given /^I have a new subprocess that takes less than 5 seconds to run$/ do
   @popen = Subprocess::Popen.new('sleep 1', 5)
+end
+
+When /^I invoke the run method of said subprocess with timeout$/ do
   @popen.run
   @popen.wait
 end
