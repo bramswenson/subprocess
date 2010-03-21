@@ -15,6 +15,8 @@ features/step_definitions/popen_without_blocking_steps.rb
 features/support/common.rb
 features/support/env.rb
 features/support/matchers.rb
+lib/core_ext/hash.rb
+lib/core_ext/process_status.rb
 lib/subprocess.rb
 lib/subprocess/popen.rb
 lib/subprocess/popen_remote.rb
