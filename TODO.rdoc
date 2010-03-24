@@ -1,0 +1,1 @@
+* make sure rails config.gem 'subprocess' works
