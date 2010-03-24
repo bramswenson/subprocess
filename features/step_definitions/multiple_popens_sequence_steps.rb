@@ -47,3 +47,27 @@ Then /^the subprocess sequence completes with failure$/ do
   @seq.status[:exitstatus].should_not == 0
 end
 
+Given /^I have a subprocess sequence with 2 subprocesses sequences$/ do
+  seq1 = Subprocess::PopenSequence.new
+  seq1.add_popen(Subprocess::Popen.new('echo "seq 1 - popen 1"'))
+  seq1.add_popen(Subprocess::Popen.new('echo "seq 1 - popen 2"'))
+  seq2 = Subprocess::PopenSequence.new
+  seq2.add_popen(Subprocess::Popen.new('echo "seq 2 - popen 1"'))
+  seq2.add_popen(Subprocess::Popen.new('echo "seq 2 - popen 2"'))
+  @seq = Subprocess::PopenSequence.new
+  @seq.add_popen(seq1)
+  @seq.add_popen(seq2)
+end
+
+When /^I run the sequence$/ do
+  @seq.perform
+end
+
+Then /^the sequences run just like any other subprocess$/ do
+  @seq.status[:exitstatus].should == 0
+  @seq.completed?.should be_true
+  @seq.complete.length.should == 2
+  @seq.incomplete.length.should == 0
+  @seq.failed.length.should == 0
+end
+

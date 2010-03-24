@@ -1,7 +1,7 @@
 
 module Subprocess
   class PopenSequence
-    attr_reader :running, :complete, :incomplete, :failed, :status
+    attr_reader :running, :complete, :incomplete, :failed, :status, :last
 
     def initialize(incomplete=[])
       @incomplete = incomplete
@@ -10,6 +10,7 @@ module Subprocess
       @running = false
       @completed = false
       @status = nil
+      @last = nil
     end
 
     def add_popen(popen)
@@ -20,10 +21,10 @@ module Subprocess
       @running = true
       @failure = false
       @incomplete.each do |popen|
-        popen.run
-        popen.wait
+        popen.perform
         popen.status[:exitstatus] == 0 ? @complete << popen : @failed << popen
         @status = popen.status
+        @last = popen
         break unless popen.status[:exitstatus] == 0
       end
       @incomplete = @incomplete - @complete

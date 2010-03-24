@@ -49,6 +49,12 @@ module Subprocess
       defined?(:@status) ? @status[:pid] : false
     end
 
+    def perform
+      # delayed job anyone?
+      run unless running?
+      wait
+    end
+
     def run
       setup_pipes
       # record the time, set running and fork off the command

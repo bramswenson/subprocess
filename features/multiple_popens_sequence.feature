@@ -17,3 +17,7 @@ Feature: Run a sequence of simple subprocesses in order
     When I run the subprocesses sequence
     Then the subprocess sequence completes with failure
 
+  Scenario: run a sequence of sequences
+    Given I have a subprocess sequence with 2 subprocesses sequences
+    When I run the sequence
+    Then the sequences run just like any other subprocess
