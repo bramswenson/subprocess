@@ -16,16 +16,16 @@ module Subprocess
     def add_popen(popen)
       @incomplete << popen
     end
+    alias :<< :add_popen
 
     def perform
       @running = true
       @failure = false
       @incomplete.each do |popen|
         popen.perform
-        popen.status[:exitstatus] == 0 ? @complete << popen : @failed << popen
         @status = popen.status
         @last = popen
-        break unless popen.status[:exitstatus] == 0
+        popen.status[:exitstatus] == 0 ? @complete << popen : (@failed << popen; break)
       end
       @incomplete = @incomplete - @complete
       @incomplete = @incomplete - @failed

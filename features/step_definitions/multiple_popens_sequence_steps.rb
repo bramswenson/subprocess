@@ -49,14 +49,14 @@ end
 
 Given /^I have a subprocess sequence with 2 subprocesses sequences$/ do
   seq1 = Subprocess::PopenSequence.new
-  seq1.add_popen(Subprocess::Popen.new('echo "seq 1 - popen 1"'))
-  seq1.add_popen(Subprocess::Popen.new('echo "seq 1 - popen 2"'))
+  seq1 << Subprocess::Popen.new('echo "seq 1 - popen 1"')
+  seq1 << Subprocess::Popen.new('echo "seq 1 - popen 2"')
   seq2 = Subprocess::PopenSequence.new
-  seq2.add_popen(Subprocess::Popen.new('echo "seq 2 - popen 1"'))
-  seq2.add_popen(Subprocess::Popen.new('echo "seq 2 - popen 2"'))
+  seq2 << Subprocess::Popen.new('echo "seq 2 - popen 1"')
+  seq2 << Subprocess::Popen.new('echo "seq 2 - popen 2"')
   @seq = Subprocess::PopenSequence.new
-  @seq.add_popen(seq1)
-  @seq.add_popen(seq2)
+  @seq << seq1
+  @seq << seq2
 end
 
 When /^I run the sequence$/ do
