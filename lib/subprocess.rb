@@ -12,7 +12,7 @@ end
 require 'timeout'
 
 module Subprocess
-  VERSION = '0.0.8'
+  VERSION = '0.0.9'
 end
 
 require 'core_ext/hash'
