@@ -7,12 +7,14 @@ examples/simple.irb
 examples/simple_timeout.irb
 features/popen.feature
 features/popen_over_ssh.feature
+features/popen_remote_fails_with_invalid_auth_data.feature
 features/popen_reports_runtime.feature
 features/popen_running.feature
 features/popen_with_timeout.feature
 features/popen_without_blocking.feature
 features/step_definitions/common_steps.rb
 features/step_definitions/popen_over_ssh_steps.rb
+features/step_definitions/popen_remote_fails_with_invalid_auth_dat_steps.rb
 features/step_definitions/popen_reports_runtime_steps.rb
 features/step_definitions/popen_running_steps.rb
 features/step_definitions/popen_steps.rb

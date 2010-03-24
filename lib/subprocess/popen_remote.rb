@@ -13,28 +13,40 @@ module Subprocess
     end
 
     private
-    def fork_parent_exec
+    def fork_child_exec
       exit_status = 0
-      ssh = Net::SSH.start(@hostname, @username, *@ssh_params) do |ssh|
-        ssh.open_channel do |channel|
-          channel.exec(@command) do |chan, success|
-            exit 1 unless success
+      begin
+        ssh = Net::SSH.start(@hostname, @username, *@ssh_params) do |ssh|
+          ssh.open_channel do |channel|
+            channel.exec(@command) do |chan, success|
+              exit 1 unless success
 
-            channel.on_data do |chan, data|
-              $stdout.write data
+              channel.on_data do |chan, data|
+                $stdout.write data
+              end
+
+              channel.on_extended_data do |chan, type, data|
+                $stderr.write data
+              end
+
+              channel.on_request('exit-status') do |chan, data|
+                exit_status = data.read_long.to_i
+              end
+
             end
-
-            channel.on_extended_data do |chan, type, data|
-              $stderr.write data
-            end
-
-            channel.on_request('exit-status') do |chan, data|
-              exit_status = data.read_long.to_i
-            end
-
           end
+          ssh.loop
         end
-        ssh.loop
+      rescue Net::SSH::AuthenticationFailed
+        $stderr.write("Net::SSH error: #{@hostname} authentication failure\n")
+      rescue Errno::ECONNREFUSED
+        $stderr.write("Net::SSH error: #{@hostname} connection refused\n")
+      rescue Errno::ETIMEDOUT
+        $stderr.write("Net::SSH error: #{@hostname} connection timeout\n")
+      rescue Errno::EHOSTUNREACH
+        $stderr.write("Net::SSH error: #{@hostname} unreachable\n")
+      rescue
+        $stderr.write("Net::SSH error: #{@hostname} unknown error\n")
       end
       exit exit_status
     end
