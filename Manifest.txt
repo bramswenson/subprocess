@@ -27,10 +27,13 @@ features/support/common.rb
 features/support/env.rb
 features/support/matchers.rb
 git_user_switcher
+lib/.subprocess.rb.swp
 lib/core_ext/hash.rb
 lib/core_ext/process_status.rb
 lib/subprocess.rb
+lib/subprocess/.popen_factory.rb.swp
 lib/subprocess/popen.rb
+lib/subprocess/popen_factory.rb
 lib/subprocess/popen_remote.rb
 lib/subprocess/popen_sequence.rb
 script/console

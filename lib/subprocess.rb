@@ -12,7 +12,7 @@ end
 require 'timeout'
 
 module Subprocess
-  VERSION = '0.0.9'
+  VERSION = '0.0.10'
 end
 
 require 'core_ext/hash'
@@ -20,3 +20,4 @@ require 'core_ext/process_status'
 require 'subprocess/popen'
 require 'subprocess/popen_remote'
 require 'subprocess/popen_sequence'
+require 'subprocess/popen_factory'
