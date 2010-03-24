@@ -13,6 +13,11 @@ module Subprocess
     end
 
     private
+    def log_to_stderr_and_exit(msg)
+      $stderr.write("Net::SSH error: #{@hostname} #{msg}")
+      exit 1
+    end
+
     def fork_child_exec
       exit_status = 0
       begin
@@ -38,15 +43,15 @@ module Subprocess
           ssh.loop
         end
       rescue Net::SSH::AuthenticationFailed
-        $stderr.write("Net::SSH error: #{@hostname} authentication failure\n")
+        log_to_stderr_and_exit("authentication failure\n")
       rescue Errno::ECONNREFUSED
-        $stderr.write("Net::SSH error: #{@hostname} connection refused\n")
+        log_to_stderr_and_exit("connection refused\n")
       rescue Errno::ETIMEDOUT
-        $stderr.write("Net::SSH error: #{@hostname} connection timeout\n")
+        log_to_stderr_and_exit("connection timeout\n")
       rescue Errno::EHOSTUNREACH
-        $stderr.write("Net::SSH error: #{@hostname} unreachable\n")
+        log_to_stderr_and_exit("unreachable\n")
       rescue
-        $stderr.write("Net::SSH error: #{@hostname} unknown error\n")
+        log_to_stderr_and_exit("unknown error\n")
       end
       exit exit_status
     end
