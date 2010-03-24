@@ -6,7 +6,6 @@ Rakefile
 TODO.rdoc
 examples/simple.irb
 examples/simple_timeout.irb
-features/.multiple_popens_sequence.feature.swp
 features/multiple_popens_sequence.feature
 features/popen.feature
 features/popen_over_ssh.feature
@@ -15,7 +14,6 @@ features/popen_reports_runtime.feature
 features/popen_running.feature
 features/popen_with_timeout.feature
 features/popen_without_blocking.feature
-features/step_definitions/.multiple_popens_sequence_steps.rb.swp
 features/step_definitions/common_steps.rb
 features/step_definitions/multiple_popens_sequence_steps.rb
 features/step_definitions/popen_over_ssh_steps.rb
