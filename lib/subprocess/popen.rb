@@ -4,9 +4,15 @@ module Subprocess
 
     attr_accessor :command, :stdout, :stderr, :status
 
-    def initialize(command, timeout=30)
+    def initialize(command, callbacks=nil, timeout=30)
       @command = command
       @timeout = timeout
+      # callback should be a hash keyed with the method/proc to
+      # be called and with a list of args to call with the
+      # callback { :somemeth => [ 'somearg', 'someother_arg' ]
+      # would end up with
+      # somemeth('somearg', 'someother_arg')
+      @callbacks = callbacks
       @running = false
       @ipc_parsed = false
     end
@@ -78,7 +84,18 @@ module Subprocess
       parse_ipc_pipe unless @ipc_parsed
     end
 
+    def active_record?
+      Module.constants.include?("ActiveRecord")
+    end
+
     private
+    def run_callbacks
+      return unless @callbacks
+      @callbacks.each do |meth,args|
+        meth.call(*args)
+      end
+    end
+
     def setup_pipes
       # setup stream pipes and a pipe for interprocess communication
       @stdin_rd, @stdin_wr = IO::pipe
@@ -87,12 +104,28 @@ module Subprocess
       @ipc_rd, @ipc_wr = IO::pipe
     end
 
+    def ar_remove_connection
+      ActiveRecord::Base.remove_connection
+    end
+    
+    def ar_establish_connection(dbconfig)
+      ActiveRecord::Base.establish_connection(dbconfig)
+    end
+
     def fork_parent
-      Kernel.fork {
-        redirect_stdstreams
-        report_child_status_to_parent(fork_child)
-        teardown_pipes
+      dbconfig = ar_remove_connection if active_record?
+      pid = Kernel.fork {
+        ar_establish_connection(dbconfig) if active_record?
+        begin
+          redirect_stdstreams
+          report_child_status_to_parent(fork_child)
+          teardown_pipes
+        ensure
+          ar_remove_connection if active_record?
+        end
       }
+      ar_establish_connection(dbconfig) if active_record?
+      pid
     end
 
     def redirect_stdstreams
@@ -113,7 +146,11 @@ module Subprocess
       start_time = Time.now.to_f
       begin
         timeout(@timeout) do
-          child_pid = Kernel.fork{ fork_child_exec }
+          dbconfig = ar_remove_connection if active_record?
+          child_pid = Kernel.fork{ 
+            fork_child_exec 
+          }
+          ar_establish_connection(dbconfig) if active_record?
           child_status = Process.wait2(child_pid)[1]
         end
       rescue Timeout::Error
@@ -124,6 +161,7 @@ module Subprocess
         child_status[:exitstatus] = 1
         child_status[:timed_out?] = true
       end
+      run_callbacks
       child_status = child_status.to_hash
       child_status[:run_time] = Time.now.to_f - start_time
       child_status
