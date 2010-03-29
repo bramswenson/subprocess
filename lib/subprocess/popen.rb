@@ -4,15 +4,9 @@ module Subprocess
 
     attr_accessor :command, :stdout, :stderr, :status
 
-    def initialize(command, callbacks=nil, timeout=300)
+    def initialize(command, timeout=300)
       @command = command
       @timeout = timeout
-      # callback should be a hash keyed with the method/proc to
-      # be called and with a list of args to call with the
-      # callback { :somemeth => [ 'somearg', 'someother_arg' ]
-      # would end up with
-      # somemeth('somearg', 'someother_arg')
-      @callbacks = callbacks
       @running = false
       @ipc_parsed = false
     end
@@ -89,13 +83,6 @@ module Subprocess
     end
 
     private
-    def run_callbacks
-      return unless @callbacks
-      @callbacks.each do |meth,args|
-        meth.call(*args)
-      end
-    end
-
     def setup_pipes
       # setup stream pipes and a pipe for interprocess communication
       @stdin_rd, @stdin_wr = IO::pipe
@@ -164,7 +151,6 @@ module Subprocess
         child_status[:exitstatus] = 1
         child_status[:timed_out?] = true
       end
-      run_callbacks
       child_status = child_status.to_hash
       child_status[:run_time] = Time.now.to_f - start_time
       child_status

@@ -4,12 +4,15 @@ module Subprocess
   class PopenRemote < Popen
     attr_accessor :hostname, :ssh_params
 
-    def initialize(command, hostname, username, *ssh_params)
+    def initialize(command, hostname, username, timeout=300, *ssh_params)
       @command = command
+      @timeout = timeout
+      @running = false
+      @ipc_parsed = false
+
       @hostname = hostname
       @username = username
       @ssh_params = ssh_params
-      @running = false
     end
 
     private
@@ -24,7 +27,7 @@ module Subprocess
         ssh = Net::SSH.start(@hostname, @username, *@ssh_params) do |ssh|
           ssh.open_channel do |channel|
             channel.exec(@command) do |chan, success|
-              exit 1 unless success
+              log_to_stderr_and_exit('failed to open exec channel') unless success
 
               channel.on_data do |chan, data|
                 $stdout.write data
@@ -52,8 +55,6 @@ module Subprocess
         log_to_stderr_and_exit("unreachable\n")
       rescue StandardError => error
         log_to_stderr_and_exit("error: #{error.message}\n")
-      rescue
-        log_to_stderr_and_exit("unknown error\n")
       end
       exit exit_status
     end

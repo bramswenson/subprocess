@@ -40,19 +40,19 @@ module Subprocess
     
     module ClassMethods
 
-      def def_command(name, command, hostname_var, username_var, ssh_params_var)
+      def def_command(name, command, hostname_var, username_var, ssh_params_var, timeout=300)
         instance_eval do 
           define_method name.to_sym do
-            eval("Subprocess::PopenRemote.new('#{command}', #{hostname_var}, #{username_var}, *#{ssh_params_var})")
+            eval("Subprocess::PopenRemote.new('#{command}', #{hostname_var}, #{username_var}, nil, timeout, *#{ssh_params_var})")
           end
         end
       end
 
-      def def_dynamic_command(name, command, hostname_var, username_var, ssh_params_var)
+      def def_dynamic_command(name, command, hostname_var, username_var, ssh_params_var, timeout=300)
         instance_eval do 
           define_method name.to_sym do |data|
             cmd = ERB.new(command).result(binding)
-            eval("Subprocess::PopenRemote.new(cmd, #{hostname_var}, #{username_var}, *#{ssh_params_var})")
+            eval("Subprocess::PopenRemote.new(cmd, #{hostname_var}, #{username_var}, nil, timeout, *#{ssh_params_var})")
           end
         end
       end
