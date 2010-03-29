@@ -4,7 +4,7 @@ module Subprocess
 
     attr_accessor :command, :stdout, :stderr, :status
 
-    def initialize(command, callbacks=nil, timeout=30)
+    def initialize(command, callbacks=nil, timeout=300)
       @command = command
       @timeout = timeout
       # callback should be a hash keyed with the method/proc to
@@ -147,10 +147,13 @@ module Subprocess
       begin
         timeout(@timeout) do
           dbconfig = ar_remove_connection if active_record?
-          child_pid = Kernel.fork{ 
-            fork_child_exec 
-          }
-          ar_establish_connection(dbconfig) if active_record?
+          begin
+            child_pid = Kernel.fork{ 
+              fork_child_exec 
+            }
+          ensure
+            ar_establish_connection(dbconfig) if active_record?
+          end
           child_status = Process.wait2(child_pid)[1]
         end
       rescue Timeout::Error

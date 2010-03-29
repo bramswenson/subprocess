@@ -50,6 +50,8 @@ module Subprocess
         log_to_stderr_and_exit("connection timeout\n")
       rescue Errno::EHOSTUNREACH
         log_to_stderr_and_exit("unreachable\n")
+      rescue StandardError => error
+        log_to_stderr_and_exit("error: #{error.message}\n")
       rescue
         log_to_stderr_and_exit("unknown error\n")
       end

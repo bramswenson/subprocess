@@ -34,9 +34,9 @@ module Subprocess
       @running = true
       @failure = false
       @queue.each do |popen|
+        @last = popen
         popen.perform
         @status = popen.status
-        @last = popen
         popen.status[:exitstatus] == 0 ? @complete << popen : 
                                         (@failed << popen; break)
       end
