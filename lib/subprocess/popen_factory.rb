@@ -43,7 +43,7 @@ module Subprocess
       def def_command(name, command, hostname_var, username_var, ssh_params_var, timeout=300)
         instance_eval do 
           define_method name.to_sym do
-            eval("Subprocess::PopenRemote.new('#{command}', #{hostname_var}, #{username_var}, nil, timeout, *#{ssh_params_var})")
+            eval("Subprocess::PopenRemote.new('#{command}', #{hostname_var}, #{username_var}, timeout, *#{ssh_params_var})")
           end
         end
       end
@@ -52,7 +52,7 @@ module Subprocess
         instance_eval do 
           define_method name.to_sym do |data|
             cmd = ERB.new(command).result(binding)
-            eval("Subprocess::PopenRemote.new(cmd, #{hostname_var}, #{username_var}, nil, timeout, *#{ssh_params_var})")
+            eval("Subprocess::PopenRemote.new(cmd, #{hostname_var}, #{username_var}, timeout, *#{ssh_params_var})")
           end
         end
       end

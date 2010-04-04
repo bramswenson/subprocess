@@ -15,7 +15,6 @@ features/popen_reports_runtime.feature
 features/popen_running.feature
 features/popen_with_timeout.feature
 features/popen_without_blocking.feature
-features/step_definitions/.popen_over_ssh_steps.rb.swp
 features/step_definitions/common_steps.rb
 features/step_definitions/multiple_popens_sequence_steps.rb
 features/step_definitions/popen_over_ssh_steps.rb
@@ -33,7 +32,6 @@ git_user_switcher
 lib/core_ext/hash.rb
 lib/core_ext/process_status.rb
 lib/subprocess.rb
-lib/subprocess/.popen_remote.rb.swp
 lib/subprocess/popen.rb
 lib/subprocess/popen_factory.rb
 lib/subprocess/popen_remote.rb

@@ -2,7 +2,11 @@
 module Subprocess
   class PopenSequenceError < StandardError; end
   class PopenSequence
-    attr_reader :running, :queue, :complete, :incomplete, :failed, :status, :last
+    require 'forwardable'
+    extend Forwardable
+    attr_reader :running, :queue, :complete, :incomplete, :failed
+
+    def_delegators :@last, :stdout, :stderr, :status
 
     def initialize(queue=[])
       @queue = queue
@@ -11,7 +15,6 @@ module Subprocess
       @failed = []
       @running = false
       @completed = false
-      @status = nil
       @last = nil
     end
 
@@ -36,7 +39,6 @@ module Subprocess
       @queue.each do |popen|
         @last = popen
         popen.perform
-        @status = popen.status
         popen.status[:exitstatus] == 0 ? @complete << popen : 
                                         (@failed << popen; break)
       end
