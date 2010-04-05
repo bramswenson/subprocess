@@ -2,11 +2,11 @@ module Subprocess
   class Popen
     include Timeout
 
-    attr_accessor :command, :stdout, :stderr, :status
+    attr_accessor :command, :stdout, :stderr, :status, :timeout
 
     def initialize(command, timeout=300)
-      @command = command
-      @timeout = timeout
+      self.command = command
+      self.timeout = timeout
       @running = false
       @ipc_parsed = false
     end
@@ -22,7 +22,7 @@ module Subprocess
         # since we didn't error then we have a pid running
         # so lets see if is over after less than .5 seconds
         begin
-          timeout(0.5) do
+          Timeout::timeout(0.5) do
             @parent_pid, parent_status = Process.wait2(@parent_pid, 0)
           end
         rescue Timeout::Error
@@ -132,7 +132,7 @@ module Subprocess
       child_pid = nil
       start_time = Time.now.to_f
       begin
-        timeout(@timeout) do
+        Timeout::timeout(self.timeout) do
           dbconfig = ar_remove_connection if active_record?
           begin
             child_pid = Kernel.fork{ 
@@ -173,7 +173,11 @@ module Subprocess
     end
 
     def parse_ipc_pipe
-      @status = JSON.parse(@ipc_rd.read).symbolize_keys
+      begin
+        @status = JSON.parse(@ipc_rd.read).symbolize_keys
+      rescue StandardError => err
+        @status = { :exitstatus => 1, :timed_out? => false, :error => err }
+      end
       @stdout, @stderr = @stdout_rd.read.chomp, @stderr_rd.read.chomp
       @stdout_rd.close; @stderr_rd.close; @ipc_rd.close
       @ipc_parsed = true
